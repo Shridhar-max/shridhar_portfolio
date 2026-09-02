@@ -32,4 +32,20 @@ document.addEventListener('DOMContentLoaded',function(){
       }
     });
   });
+
+  // Open a prefilled Gmail draft when no server-side form service is configured.
+  const contactForm = document.querySelector('#contact-form');
+  contactForm && contactForm.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    const formData = new FormData(contactForm);
+    const status = contactForm.querySelector('.form-status');
+    const name = formData.get('name').trim();
+    const email = formData.get('email').trim();
+    const message = formData.get('message').trim();
+    const subject = `Portfolio enquiry from ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=shridharshri7483@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if(status) status.textContent = 'Opening Gmail...';
+    window.location.href = gmailUrl;
+  });
 });
